@@ -7,7 +7,7 @@ Generate Minecraft Java 1.21.1 Litematica blueprints (`.schem`) from natural-lan
 ## What It Does
 
 - Turns a sentence into a placeable Litematica blueprint — `.schem` plus preview images, auto-chunked to 256³, targeting Java 1.21.1
-- Ships 11 styles (9 with ready builders), so most requests need only spec edits and no geometry code
+- Ships 9 styles, so most requests need only spec edits and no geometry code
 - Covers everything else with a declarative geometry layer: lines, circles, ellipses, rectangles, parallelograms, spheres, boxes, half-spaces, function surfaces, and space curves (helix / Bézier / torus knot), composed with boolean ops
 - Gates micro-edits with a voxel-level diff that proves everything outside the intended bbox is bit-identical
 - Runs a full acceptance loop: static audit plus four-view multimodal review, feeding errors back with coordinates until it passes
