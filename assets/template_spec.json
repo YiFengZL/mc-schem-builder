@@ -1,0 +1,33 @@
+{
+  "_comment": "spec 模板：复制本文件改字段即可。必填 name 与 style；params 里只写要覆盖风格默认值的项。校验：python scripts/validate_spec.py --check 本文件",
+  "schema_version": 1,
+  "name": "my_castle",
+  "style": "castle",
+  "mc_version": "1.21.1",
+  "params": {
+    "size": 60,
+    "wall_height": 12,
+    "base_height": 3,
+    "wall_block": "minecraft:stone_bricks",
+    "base_block": "minecraft:cobblestone",
+    "battlement_enable": true,
+    "battlement_height": 2,
+    "tower_enable": true,
+    "tower_radius": 3,
+    "tower_height": 18,
+    "tower_roof_enable": true,
+    "roof_block": "minecraft:dark_oak_stairs",
+    "roof_slope": "outward",
+    "gate_enable": true,
+    "gate_side": "south",
+    "gate_width": 5,
+    "gate_height": 6,
+    "gate_arch": true,
+    "hollow": true
+  },
+  "output": {
+    "dir": "mc_builds/my_castle",
+    "basename": "my_castle",
+    "slice_max_dim": 256
+  }
+}

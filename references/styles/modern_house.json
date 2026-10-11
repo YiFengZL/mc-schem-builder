@@ -1,0 +1,207 @@
+{
+  "style": "modern_house",
+  "display_name_cn": "现代民居（外壳）",
+  "description": "带屋顶的现代民居外壳：多层体块（可选顶部内收退台）+ 层间腰线/楼板 + 成排窗户 + 入口门廊（可选车库、柱网、做旧）+ 双坡/四坡/平顶（平顶边缘可用栏杆）。内部为空，屋顶只出屋面壳。",
+  "builder": "modern_house",
+  "params": {
+    "length": {
+      "type": "int", "default": 24, "min": 6, "max": 512,
+      "desc": "主体 X 方向长度"
+    },
+    "width": {
+      "type": "int", "default": 16, "min": 6, "max": 512,
+      "desc": "主体 Z 方向长度"
+    },
+    "floor_height": {
+      "type": "int", "default": 4, "min": 3, "max": 32,
+      "desc": "单层层高"
+    },
+    "floors": {
+      "type": "int", "default": 2, "min": 1, "max": 32,
+      "desc": "层数"
+    },
+    "wall_block": {
+      "type": "block", "default": "minecraft:white_concrete",
+      "desc": "墙面主材"
+    },
+    "accent_block": {
+      "type": "block", "default": "minecraft:light_gray_concrete",
+      "desc": "层间腰线 / 门廊台阶基座材质"
+    },
+    "floor_slab_block": {
+      "type": "block", "default": "minecraft:light_gray_concrete",
+      "desc": "层间楼板材质（内部一层板）"
+    },
+    "roof_type": {
+      "type": "choice", "default": "gable", "choices": ["gable", "hip", "flat"],
+      "desc": "gable=双坡(人字) / hip=四坡(庑殿) / flat=平顶(带女儿墙)"
+    },
+    "roof_block": {
+      "type": "block", "default": "minecraft:dark_oak_stairs",
+      "desc": "坡顶材质（楼梯类方块；朝向由程序按坡面自动计算）"
+    },
+    "roof_overhang": {
+      "type": "int", "default": 1, "min": 0, "max": 8,
+      "desc": "屋檐外挑格数"
+    },
+    "roof_ridge_axis": {
+      "type": "choice", "default": "x", "choices": ["x", "z"],
+      "desc": "双坡脊线走向（roof_type=gable 时有效；建议沿长边）"
+    },
+    "gable_block": {
+      "type": "block", "default": "minecraft:white_concrete",
+      "desc": "山墙三角填充材质（roof_type=gable 时有效）"
+    },
+    "roof_flat_block": {
+      "type": "block", "default": "minecraft:smooth_stone",
+      "desc": "平顶屋面板 / 退台台面 / 实心压边材质（roof_type=flat 或开启退台时有效）"
+    },
+    "roof_railing_enable": {
+      "type": "bool", "default": true,
+      "desc": "平顶边缘用栏杆（立柱 + 玻璃栏板）代替实心压边（roof_type=flat 时有效）"
+    },
+    "roof_railing_block": {
+      "type": "block", "default": "minecraft:smooth_stone",
+      "desc": "平顶栏杆立柱材质（栏板沿用 window_glass）"
+    },
+    "window_enable": {
+      "type": "bool", "default": true,
+      "desc": "是否在四面开成排窗户"
+    },
+    "window_width": {
+      "type": "int", "default": 1, "min": 1, "max": 16,
+      "desc": "单扇窗净宽"
+    },
+    "window_height": {
+      "type": "int", "default": 2, "min": 1, "max": 16,
+      "desc": "窗净高（需满足 window_height + 2 <= floor_height）"
+    },
+    "window_spacing": {
+      "type": "int", "default": 2, "min": 1, "max": 32,
+      "desc": "相邻两窗之间的墙宽"
+    },
+    "window_margin": {
+      "type": "int", "default": 2, "min": 1, "max": 32,
+      "desc": "窗排距墙角的最小留白（避免与相邻面窗户打架）"
+    },
+    "window_glass": {
+      "type": "block", "default": "minecraft:glass",
+      "desc": "玻璃材质；建议整块方块，用玻璃板需自行处理连接属性"
+    },
+    "window_frame_enable": {
+      "type": "bool", "default": true,
+      "desc": "是否给窗洞加一圈窗框"
+    },
+    "window_frame": {
+      "type": "block", "default": "minecraft:chiseled_stone_bricks",
+      "desc": "窗框材质"
+    },
+    "window_sill_enable": {
+      "type": "bool", "default": true,
+      "desc": "是否加窗台（窗洞下一层、左右各多 1 格）"
+    },
+    "window_sill": {
+      "type": "block", "default": "minecraft:stone_brick_slab",
+      "desc": "窗台材质"
+    },
+    "entrance_enable": {
+      "type": "bool", "default": true,
+      "desc": "是否开入口门洞（正面居中）"
+    },
+    "entrance_side": {
+      "type": "choice", "default": "south", "choices": ["south", "north", "west", "east"],
+      "desc": "入口所在面；一层该面不再排窗"
+    },
+    "entrance_width": {
+      "type": "int", "default": 1, "min": 1, "max": 16,
+      "desc": "门洞净宽（=1 且高 >=2 时自动放上下两格门）"
+    },
+    "entrance_height": {
+      "type": "int", "default": 3, "min": 2, "max": 32,
+      "desc": "门洞净高"
+    },
+    "entrance_door_block": {
+      "type": "block", "default": "minecraft:oak_door",
+      "desc": "门板材质（entrance_width=1 时生效）"
+    },
+    "entrance_frame_block": {
+      "type": "block", "default": "minecraft:chiseled_stone_bricks",
+      "desc": "门洞外框材质"
+    },
+    "entrance_hinge": {
+      "type": "choice", "default": "left", "choices": ["left", "right"],
+      "desc": "门轴方向（开错边时改这项）"
+    },
+    "entrance_steps": {
+      "type": "int", "default": 2, "min": 0, "max": 16,
+      "desc": "门前台阶级数（0 = 不做台阶）；台阶自门向外逐级下降"
+    },
+    "entrance_step_block": {
+      "type": "block", "default": "minecraft:stone_brick_stairs",
+      "desc": "台阶材质（楼梯类方块；朝向=上行方向，程序自动处理）"
+    },
+    "garage_enable": {
+      "type": "bool", "default": false,
+      "desc": "是否在一层侧面开车库大开口（非门板，纯洞口）"
+    },
+    "garage_side": {
+      "type": "choice", "default": "east", "choices": ["south", "north", "west", "east"],
+      "desc": "车库开口所在面；一层该面不再排窗，且不可与 entrance_side 同侧"
+    },
+    "garage_width": {
+      "type": "int", "default": 5, "min": 2, "max": 64,
+      "desc": "车库开口净宽"
+    },
+    "garage_height": {
+      "type": "int", "default": 4, "min": 2, "max": 32,
+      "desc": "车库开口净高（自 y=0 起算）"
+    },
+    "pillar_enable": {
+      "type": "bool", "default": false,
+      "desc": "是否沿墙圈加结构立柱（柱网）"
+    },
+    "pillar_block": {
+      "type": "block", "default": "minecraft:white_concrete",
+      "desc": "立柱材质"
+    },
+    "pillar_interval": {
+      "type": "int", "default": 3, "min": 2, "max": 64,
+      "desc": "立柱间距（沿墙圈每 N 格一根；立柱不覆盖窗户）"
+    },
+    "volume_inset": {
+      "type": "int", "default": 0, "min": 0, "max": 16,
+      "desc": "顶部体块内收格数（0 = 不退台）；开启后上层体块向内收，露出环形台面"
+    },
+    "volume_floors": {
+      "type": "int", "default": 1, "min": 1, "max": 32,
+      "desc": "内收体块占的层数（自顶向下数；须小于总层数）"
+    },
+    "weather_enable": {
+      "type": "bool", "default": false,
+      "desc": "是否对墙面做近地做旧（确定性哈希，不影响 diff 门禁）"
+    },
+    "weather_ratio": {
+      "type": "float", "default": 0.35, "min": 0.0, "max": 1.0,
+      "desc": "做旧强度：地面处替换成 weather_aged_block 的比例，向上线性衰减到 0"
+    },
+    "weather_aged_block": {
+      "type": "block", "default": "minecraft:mossy_stone_bricks",
+      "desc": "做旧替换材质"
+    }
+  },
+  "constraints": [
+    {"expr": "length >= 6 and width >= 6", "msg": "主体长宽至少 6 格"},
+    {"expr": "window_height + 2 <= floor_height", "msg": "窗高过大：窗上下各需 1 格边框，要求 window_height + 2 <= floor_height"},
+    {"expr": "window_margin * 2 + window_width <= min(length, width)", "msg": "窗宽 + 两侧留白超过短边，一扇窗都排不下"},
+    {"expr": "entrance_height <= floor_height", "msg": "门洞高不能超过单层层高"},
+    {"expr": "entrance_width <= min(length, width) - 4", "msg": "门洞过宽，两侧墙体不足"},
+    {"expr": "roof_overhang <= min(length, width) // 4", "msg": "屋檐外挑过大（超过短边的 1/4）"},
+    {"expr": "garage_enable == False or entrance_side != garage_side", "msg": "车库开口与入口不能在同一面（洞口会互相吃掉）"},
+    {"expr": "garage_enable == False or garage_width <= min(length, width) - 4", "msg": "车库开口过宽，两侧墙体不足"},
+    {"expr": "garage_enable == False or garage_height <= floor_height", "msg": "车库开口高不能超过单层层高"},
+    {"expr": "entrance_steps <= floor_height + 2", "msg": "门前台阶过多，会挖得过深"},
+    {"expr": "volume_inset * 2 + 6 <= min(length, width)", "msg": "顶部内收过多，剩余核心太小"},
+    {"expr": "volume_inset == 0 or volume_floors < floors", "msg": "内收体块层数不能等于总层数（否则整栋都是收进去的）"},
+    {"expr": "pillar_enable == False or pillar_interval >= 2", "msg": "立柱间距至少 2 格"}
+  ]
+}

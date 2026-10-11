@@ -1,0 +1,114 @@
+{
+  "style": "spiral_tower",
+  "display_name_cn": "螺旋塔（外壳）",
+  "description": "圆塔身（圆柱壳）+ 外挂螺旋坡道（参数方程空间曲线）+ 腰线 + 窗 + 门 + 锥顶/平顶/雉堞。内部为空。螺旋坡道由几何合成层的 SpaceCurve 生成，任意圈数/偏移/起点高度。",
+  "builder": "spiral_tower",
+  "params": {
+    "radius": {
+      "type": "int", "default": 5, "min": 2, "max": 64,
+      "desc": "塔身外半径（外径 2r+1）"
+    },
+    "height": {
+      "type": "int", "default": 28, "min": 6, "max": 512,
+      "desc": "塔身总高度"
+    },
+    "thickness": {
+      "type": "int", "default": 1, "min": 1, "max": 8,
+      "desc": "塔壁厚度"
+    },
+    "base_height": {
+      "type": "int", "default": 3, "min": 0, "max": 64,
+      "desc": "基座高度（实心底座）"
+    },
+    "base_block": {
+      "type": "block", "default": "minecraft:cobblestone",
+      "desc": "基座材质"
+    },
+    "wall_block": {
+      "type": "block", "default": "minecraft:stone_bricks",
+      "desc": "塔身墙体材质"
+    },
+    "accent_block": {
+      "type": "block", "default": "minecraft:chiseled_stone_bricks",
+      "desc": "腰线 / 平顶压边材质"
+    },
+    "band_interval": {
+      "type": "int", "default": 6, "min": 0, "max": 64,
+      "desc": "腰线间隔（0 = 不做腰线）"
+    },
+    "window_enable": {
+      "type": "bool", "default": true,
+      "desc": "是否按 interval 开窗"
+    },
+    "window_interval": {
+      "type": "int", "default": 6, "min": 1, "max": 64,
+      "desc": "竖向开窗间隔"
+    },
+    "window_height": {
+      "type": "int", "default": 2, "min": 1, "max": 16,
+      "desc": "窗高（格）"
+    },
+    "window_block": {
+      "type": "block", "default": "minecraft:glass",
+      "desc": "窗材质"
+    },
+    "door_enable": {
+      "type": "bool", "default": true,
+      "desc": "是否在基座开门"
+    },
+    "door_side": {
+      "type": "choice", "default": "south", "choices": ["south", "north", "west", "east"],
+      "desc": "门所在面"
+    },
+    "door_height": {
+      "type": "int", "default": 3, "min": 1, "max": 32,
+      "desc": "门洞净高"
+    },
+    "ramp_enable": {
+      "type": "bool", "default": true,
+      "desc": "是否外挂螺旋坡道（空间闭合曲线）"
+    },
+    "ramp_turns": {
+      "type": "float", "default": 3.0, "min": 0.25, "max": 64.0,
+      "desc": "螺旋圈数（整数时首尾在平面上闭合）"
+    },
+    "ramp_offset": {
+      "type": "int", "default": 0, "min": 0, "max": 16,
+      "desc": "坡道相对塔壁外缘的外扩格数（0 = 紧贴塔壁）"
+    },
+    "ramp_width": {
+      "type": "int", "default": 2, "min": 1, "max": 8,
+      "desc": "坡道宽度（管状直径，≥2 更稳）"
+    },
+    "ramp_samples": {
+      "type": "int", "default": 256, "min": 32, "max": 4096,
+      "desc": "参数采样数（越大越平滑，越大越慢）"
+    },
+    "ramp_phase": {
+      "type": "float", "default": 0.0, "min": -6.2832, "max": 6.2832,
+      "desc": "螺旋起始角（弧度）"
+    },
+    "ramp_block": {
+      "type": "block", "default": "minecraft:stone_brick_slab",
+      "desc": "坡道材质"
+    },
+    "roof_type": {
+      "type": "choice", "default": "cone", "choices": ["cone", "flat", "battlement"],
+      "desc": "顶部形式：锥顶 / 平顶（压边）/ 雉堞"
+    },
+    "roof_block": {
+      "type": "block", "default": "minecraft:dark_oak_stairs",
+      "desc": "屋顶材质（cone 时须为楼梯类）"
+    },
+    "roof_slope": {
+      "type": "choice", "default": "outward", "choices": ["outward", "inward"],
+      "desc": "锥顶坡向（游戏里看反了就改这项）"
+    }
+  },
+  "constraints": [
+    {"expr": "height > base_height + 2", "msg": "塔身太矮：需 height > base_height + 2"},
+    {"expr": "radius >= thickness + 1", "msg": "半径过小：需 radius >= thickness + 1（否则没有内腔）"},
+    {"expr": "window_enable == False or window_height + 2 <= height - base_height", "msg": "窗高过大：窗上下各需留 1 格"},
+    {"expr": "ramp_enable == False or ramp_turns >= 0.5", "msg": "螺旋坡道圈数至少 0.5"}
+  ]
+}

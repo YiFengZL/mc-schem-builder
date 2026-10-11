@@ -1,0 +1,67 @@
+{
+  "style": "bridge",
+  "display_name_cn": "拱桥",
+  "description": "多跨石拱桥：桥面 + 拱券 + 桥墩 + 可选栏杆。适合跨河/跨谷地标。",
+  "builder": "bridge",
+  "params": {
+    "span": {
+      "type": "int", "default": 48, "min": 6, "max": 2048,
+      "desc": "桥总跨长（X 方向）"
+    },
+    "deck_width": {
+      "type": "int", "default": 7, "min": 1, "max": 64,
+      "desc": "桥面宽（Z 方向）"
+    },
+    "deck_y": {
+      "type": "int", "default": 8, "min": 1, "max": 256,
+      "desc": "桥面高度（从 y=0 起算，即水面以上高度）"
+    },
+    "deck_thickness": {
+      "type": "int", "default": 1, "min": 1, "max": 8,
+      "desc": "桥面板厚"
+    },
+    "arch_count": {
+      "type": "int", "default": 3, "min": 1, "max": 32,
+      "desc": "拱券数量"
+    },
+    "pier_width": {
+      "type": "int", "default": 2, "min": 1, "max": 16,
+      "desc": "桥墩宽（X 方向）"
+    },
+    "arch_thickness": {
+      "type": "float", "default": 0.75, "min": 0.3, "max": 1.0,
+      "desc": "拱高相对拱跨的比例（0.75 = 较高拱）"
+    },
+    "deck_block": {
+      "type": "block", "default": "minecraft:stone_bricks",
+      "desc": "桥面材质"
+    },
+    "arch_block": {
+      "type": "block", "default": "minecraft:stone_brick_slab",
+      "desc": "拱券内侧材质"
+    },
+    "pier_block": {
+      "type": "block", "default": "minecraft:chiseled_stone_bricks",
+      "desc": "桥墩材质"
+    },
+    "railing_enable": {
+      "type": "bool", "default": true,
+      "desc": "是否加栏杆"
+    },
+    "railing_height": {
+      "type": "int", "default": 1, "min": 1, "max": 4,
+      "desc": "栏杆高"
+    },
+    "railing_block": {
+      "type": "block", "default": "minecraft:stone_brick_wall",
+      "desc": "栏杆材质（墙类方块最佳）"
+    }
+  },
+  "constraints": [
+    {"expr": "pier_width * arch_count < span", "msg": "桥墩总宽不能超过跨长"},
+    {"expr": "deck_y > 1", "msg": "桥面高度至少为 2，否则拱下无净空"},
+    {"expr": "arch_count >= 1", "msg": "至少要有 1 个拱"},
+    {"expr": "(span - pier_width * arch_count) // arch_count >= 2", "msg": "单拱净跨过小（<2 格），请减少拱数或增大跨长"},
+    {"expr": "deck_width >= 3 or railing_enable == False", "msg": "桥面宽小于 3 时建议关闭栏杆，否则无通行宽度"}
+  ]
+}

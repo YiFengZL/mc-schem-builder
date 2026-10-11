@@ -1,0 +1,99 @@
+{
+  "style": "tower",
+  "display_name_cn": "独立塔楼 / 瞭望塔",
+  "description": "单座圆塔：筒身 + 可选分层窗 + 顶部锥顶/平顶/雉堞，可开门洞。适合法师塔、灯塔、瞭望塔。",
+  "builder": "tower",
+  "params": {
+    "radius": {
+      "type": "int", "default": 4, "min": 1, "max": 32,
+      "desc": "塔身外半径（4 -> 外径 9）"
+    },
+    "height": {
+      "type": "int", "default": 32, "min": 3, "max": 512,
+      "desc": "塔身总高（不含屋顶）"
+    },
+    "thickness": {
+      "type": "int", "default": 1, "min": 1, "max": 8,
+      "desc": "塔壁厚（格）"
+    },
+    "base_height": {
+      "type": "int", "default": 2, "min": 0, "max": 32,
+      "desc": "基座高（用更厚重的材质）"
+    },
+    "wall_block": {
+      "type": "block", "default": "minecraft:stone_bricks",
+      "desc": "塔身主材"
+    },
+    "base_block": {
+      "type": "block", "default": "minecraft:deepslate_bricks",
+      "desc": "基座材质"
+    },
+    "accent_block": {
+      "type": "block", "default": "minecraft:chiseled_stone_bricks",
+      "desc": "腰线/装饰带材质"
+    },
+    "band_interval": {
+      "type": "int", "default": 8, "min": 0, "max": 64,
+      "desc": "每隔多少格加一道装饰腰线（0 = 关闭）"
+    },
+    "window_enable": {
+      "type": "bool", "default": true,
+      "desc": "是否开窗"
+    },
+    "window_interval": {
+      "type": "int", "default": 6, "min": 3, "max": 64,
+      "desc": "窗户垂直间隔（格）"
+    },
+    "window_height": {
+      "type": "int", "default": 2, "min": 1, "max": 8,
+      "desc": "窗洞高"
+    },
+    "window_block": {
+      "type": "block", "default": "minecraft:glass_pane",
+      "desc": "窗户填充材质"
+    },
+    "door_enable": {
+      "type": "bool", "default": true,
+      "desc": "是否在底部开门洞"
+    },
+    "door_side": {
+      "type": "choice", "default": "south", "choices": ["south", "north", "west", "east"],
+      "desc": "门洞所在方向"
+    },
+    "door_height": {
+      "type": "int", "default": 3, "min": 2, "max": 16,
+      "desc": "门洞高"
+    },
+    "roof_type": {
+      "type": "choice", "default": "cone", "choices": ["cone", "flat", "battlement", "none"],
+      "desc": "顶部形式：锥顶 / 平顶 / 雉堞 / 无顶"
+    },
+    "roof_height": {
+      "type": "int", "default": 0, "min": 0, "max": 64,
+      "desc": "锥顶额外加高（0 = 按半径自然收分）"
+    },
+    "roof_block": {
+      "type": "block", "default": "minecraft:dark_oak_stairs",
+      "desc": "锥顶材质（楼梯类）"
+    },
+    "roof_slope": {
+      "type": "choice", "default": "outward", "choices": ["outward", "inward"],
+      "desc": "锥顶坡向；游戏里看到反了就改这项"
+    },
+    "floor_enable": {
+      "type": "bool", "default": false,
+      "desc": "是否每层加楼板（仅外壳用途通常关闭）"
+    },
+    "floor_interval": {
+      "type": "int", "default": 6, "min": 3, "max": 64,
+      "desc": "楼板间隔（floor_enable 为 true 时生效）"
+    }
+  },
+  "constraints": [
+    {"expr": "base_height < height", "msg": "基座高必须小于塔身总高"},
+    {"expr": "thickness < radius", "msg": "壁厚必须小于半径，否则塔心会被填实"},
+    {"expr": "door_height < height", "msg": "门洞高必须小于塔身总高"},
+    {"expr": "band_interval == 0 or band_interval >= 2", "msg": "腰线间隔至少 2 格（0 表示关闭）"},
+    {"expr": "window_interval >= window_height + 2", "msg": "窗间隔需比窗高大至少 2 格，否则窗会连成一片"}
+  ]
+}

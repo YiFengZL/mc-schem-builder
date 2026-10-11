@@ -1,0 +1,100 @@
+{
+  "style": "castle",
+  "display_name_cn": "中世纪城堡外墙",
+  "description": "四面石砖墙 + 城垛 + 四角圆塔（锥形屋顶）+ 单面拱形城门；内部为空。",
+  "builder": "castle",
+  "params": {
+    "size": {
+      "type": "int", "default": 60, "min": 16, "max": 1024,
+      "desc": "外墙边长（正方形，含端点格数）"
+    },
+    "wall_height": {
+      "type": "int", "default": 12, "min": 4, "max": 256,
+      "desc": "墙体总高（含墙基，不含城垛）"
+    },
+    "base_height": {
+      "type": "int", "default": 3, "min": 0, "max": 32,
+      "desc": "墙基高（从 y=0 起算）"
+    },
+    "wall_block": {
+      "type": "block", "default": "minecraft:stone_bricks",
+      "desc": "墙体主材"
+    },
+    "base_block": {
+      "type": "block", "default": "minecraft:cobblestone",
+      "desc": "墙基材质"
+    },
+    "battlement_enable": {
+      "type": "bool", "default": true,
+      "desc": "是否生成城垛（雉堞）"
+    },
+    "battlement_height": {
+      "type": "int", "default": 2, "min": 1, "max": 8,
+      "desc": "城垛高（叠在墙顶之上）"
+    },
+    "battlement_block": {
+      "type": "block", "default": "minecraft:stone_bricks",
+      "desc": "城垛材质"
+    },
+    "tower_enable": {
+      "type": "bool", "default": true,
+      "desc": "是否在四角生成圆塔"
+    },
+    "tower_radius": {
+      "type": "int", "default": 3, "min": 1, "max": 24,
+      "desc": "塔楼外半径（3 -> 外径 7）"
+    },
+    "tower_height": {
+      "type": "int", "default": 18, "min": 4, "max": 256,
+      "desc": "塔楼高（不含屋顶）"
+    },
+    "tower_block": {
+      "type": "block", "default": "minecraft:stone_bricks",
+      "desc": "塔楼墙体材质"
+    },
+    "tower_roof_enable": {
+      "type": "bool", "default": true,
+      "desc": "是否生成锥形屋顶"
+    },
+    "roof_block": {
+      "type": "block", "default": "minecraft:dark_oak_stairs",
+      "desc": "屋顶材质（楼梯类方块，朝向由程序自动处理）"
+    },
+    "roof_slope": {
+      "type": "choice", "default": "outward", "choices": ["outward", "inward"],
+      "desc": "屋顶坡向；游戏里看到坡向反了就改这项"
+    },
+    "gate_enable": {
+      "type": "bool", "default": true,
+      "desc": "是否开城门"
+    },
+    "gate_side": {
+      "type": "choice", "default": "south", "choices": ["south", "north", "west", "east"],
+      "desc": "城门所在面（south 为 z 最小那面）"
+    },
+    "gate_width": {
+      "type": "int", "default": 5, "min": 1, "max": 64,
+      "desc": "城门净宽（奇数更对称）"
+    },
+    "gate_height": {
+      "type": "int", "default": 6, "min": 2, "max": 128,
+      "desc": "城门净高"
+    },
+    "gate_arch": {
+      "type": "bool", "default": true,
+      "desc": "门上是否做拱形收口"
+    },
+    "hollow": {
+      "type": "bool", "default": true,
+      "desc": "内部是否为空（true = 仅外壳）"
+    }
+  },
+  "constraints": [
+    {"expr": "base_height < wall_height", "msg": "墙基高必须小于墙体总高"},
+    {"expr": "gate_width <= size - 8", "msg": "城门宽度过大，墙长至少要比门宽多 8 格"},
+    {"expr": "gate_height < wall_height", "msg": "城门高必须小于墙体总高"},
+    {"expr": "tower_radius * 2 + 4 <= size", "msg": "塔楼直径过大，两侧墙体会被完全吃掉"},
+    {"expr": "tower_height >= wall_height", "msg": "塔楼高通常不应低于墙体高（会失去城堡轮廓）"},
+    {"expr": "gate_enable == False or gate_width >= 1", "msg": "城门宽度至少为 1"}
+  ]
+}

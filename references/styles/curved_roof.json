@@ -1,0 +1,74 @@
+{
+  "style": "curved_roof",
+  "display_name_cn": "自由曲面屋面（外壳）",
+  "description": "矩形墙身 + 由二元函数曲面 y=f(x,z) 生成的屋面（dome 穹 / saddle 鞍 / wave 波浪）+ 可选柱网 + 楼板。内部为空。屋面由几何合成层的 FunctionSurface 生成，换曲线只需换函数。",
+  "builder": "curved_roof",
+  "params": {
+    "length": {
+      "type": "int", "default": 20, "min": 4, "max": 512,
+      "desc": "主体 X 方向长度"
+    },
+    "width": {
+      "type": "int", "default": 16, "min": 4, "max": 512,
+      "desc": "主体 Z 方向长度"
+    },
+    "base_height": {
+      "type": "int", "default": 1, "min": 0, "max": 64,
+      "desc": "墙基高度"
+    },
+    "wall_height": {
+      "type": "int", "default": 6, "min": 1, "max": 128,
+      "desc": "墙身高度（屋面起始高度）"
+    },
+    "base_block": {
+      "type": "block", "default": "minecraft:stone_bricks",
+      "desc": "墙基材质"
+    },
+    "wall_block": {
+      "type": "block", "default": "minecraft:white_concrete",
+      "desc": "墙体材质"
+    },
+    "roof_block": {
+      "type": "block", "default": "minecraft:light_gray_concrete",
+      "desc": "曲面屋面材质"
+    },
+    "floor_block": {
+      "type": "block", "default": "minecraft:smooth_stone",
+      "desc": "地面楼板材质（hollow=false 时铺）"
+    },
+    "roof_thickness": {
+      "type": "int", "default": 1, "min": 1, "max": 16,
+      "desc": "屋面厚度（向下增厚）"
+    },
+    "roof_rise": {
+      "type": "float", "default": 6.0, "min": 0.0, "max": 64.0,
+      "desc": "曲面起伏量（穹顶高度 / 鞍面幅度 / 波浪幅度）"
+    },
+    "curve_type": {
+      "type": "choice", "default": "dome", "choices": ["dome", "saddle", "wave"],
+      "desc": "曲面类型：穹顶 / 鞍面 / 波浪（余弦）"
+    },
+    "pillar_enable": {
+      "type": "bool", "default": false,
+      "desc": "是否在内部加柱网"
+    },
+    "pillar_interval": {
+      "type": "int", "default": 4, "min": 2, "max": 64,
+      "desc": "柱网间距"
+    },
+    "pillar_block": {
+      "type": "block", "default": "minecraft:white_concrete",
+      "desc": "柱材质"
+    },
+    "hollow": {
+      "type": "bool", "default": false,
+      "desc": "内部是否为空；false = 铺一层地面楼板"
+    }
+  },
+  "constraints": [
+    {"expr": "length >= 4 and width >= 4", "msg": "主体长宽至少 4 格"},
+    {"expr": "base_height < wall_height", "msg": "墙基高不能超过等于墙身高"},
+    {"expr": "pillar_enable == False or pillar_interval >= 2", "msg": "柱网间距至少 2 格"},
+    {"expr": "roof_rise <= wall_height * 4", "msg": "曲面起伏过大（建议不超过墙高的 4 倍）"}
+  ]
+}

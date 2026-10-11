@@ -1,0 +1,69 @@
+{
+  "style": "slant_house",
+  "display_name_cn": "斜向结构（外壳）",
+  "description": "四面倾斜墙体（平行四边形，逐层水平偏移 lean 格）围合的体块 + 楼板 + 平顶（可选栏杆）/ 双坡顶。内部为空。墙面由几何合成层的 Parallelogram2 生成，倾斜量是一个参数。",
+  "builder": "slant_house",
+  "params": {
+    "length": {
+      "type": "int", "default": 12, "min": 3, "max": 512,
+      "desc": "底面 X 方向长度"
+    },
+    "width": {
+      "type": "int", "default": 10, "min": 3, "max": 512,
+      "desc": "底面 Z 方向长度"
+    },
+    "height": {
+      "type": "int", "default": 12, "min": 3, "max": 512,
+      "desc": "体块高度"
+    },
+    "lean": {
+      "type": "int", "default": 1, "min": -3, "max": 3,
+      "desc": "每升高一层向 +x 偏移的格数（负值反向倾斜；0 = 直墙）"
+    },
+    "wall_block": {
+      "type": "block", "default": "minecraft:white_concrete",
+      "desc": "墙体材质"
+    },
+    "floor_block": {
+      "type": "block", "default": "minecraft:smooth_stone",
+      "desc": "地面楼板材质（hollow=false 时铺）"
+    },
+    "roof_block": {
+      "type": "block", "default": "minecraft:dark_oak_planks",
+      "desc": "屋面 / 压顶材质"
+    },
+    "glass_block": {
+      "type": "block", "default": "minecraft:glass_pane",
+      "desc": "栏杆栏板材质（玻璃板类由程序收尾补连接属性）"
+    },
+    "roof_type": {
+      "type": "choice", "default": "flat", "choices": ["flat", "gable"],
+      "desc": "flat=平顶（可选栏杆）/ gable=双坡顶"
+    },
+    "roof_ridge_axis": {
+      "type": "choice", "default": "x", "choices": ["x", "z"],
+      "desc": "gable 时屋脊方向"
+    },
+    "roof_overhang": {
+      "type": "int", "default": 1, "min": 0, "max": 8,
+      "desc": "挑檐外伸格数"
+    },
+    "railing_enable": {
+      "type": "bool", "default": true,
+      "desc": "平顶是否加栏杆（仅 roof_type=flat 时生效）"
+    },
+    "railing_block": {
+      "type": "block", "default": "minecraft:oak_fence",
+      "desc": "栏杆立柱材质"
+    },
+    "hollow": {
+      "type": "bool", "default": false,
+      "desc": "内部是否为空；false = 铺一层地面楼板"
+    }
+  },
+  "constraints": [
+    {"expr": "length >= 3 and width >= 3 and height >= 3", "msg": "长/宽/高至少 3 格"},
+    {"expr": "abs(lean) <= 2", "msg": "倾斜量过大（|lean| ≤ 2，否则体块会明显脱节）"},
+    {"expr": "roof_overhang <= min(length, width) // 4", "msg": "挑檐过大（超过短边的 1/4）"}
+  ]
+}

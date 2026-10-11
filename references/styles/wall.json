@@ -1,0 +1,86 @@
+{
+  "style": "wall",
+  "display_name_cn": "围墙 / 院墙",
+  "description": "矩形围墙：墙基 + 墙体 + 压顶 + 可选城垛、扶壁柱、单面门洞。适合庭院、庄园、城镇边界。",
+  "builder": "wall",
+  "params": {
+    "length": {
+      "type": "int", "default": 80, "min": 8, "max": 2048,
+      "desc": "围墙 X 方向长度"
+    },
+    "width": {
+      "type": "int", "default": 60, "min": 8, "max": 2048,
+      "desc": "围墙 Z 方向长度"
+    },
+    "wall_height": {
+      "type": "int", "default": 6, "min": 2, "max": 256,
+      "desc": "墙体总高（含墙基）"
+    },
+    "base_height": {
+      "type": "int", "default": 1, "min": 0, "max": 32,
+      "desc": "墙基高"
+    },
+    "thickness": {
+      "type": "int", "default": 1, "min": 1, "max": 8,
+      "desc": "墙厚（格）"
+    },
+    "wall_block": {
+      "type": "block", "default": "minecraft:stone_bricks",
+      "desc": "墙体主材"
+    },
+    "base_block": {
+      "type": "block", "default": "minecraft:mossy_cobblestone",
+      "desc": "墙基材质"
+    },
+    "cap_block": {
+      "type": "block", "default": "minecraft:stone_brick_slab",
+      "desc": "压顶材质（建议用台阶）"
+    },
+    "cap_enable": {
+      "type": "bool", "default": true,
+      "desc": "是否加压顶"
+    },
+    "battlement_enable": {
+      "type": "bool", "default": false,
+      "desc": "是否加城垛"
+    },
+    "pillar_enable": {
+      "type": "bool", "default": true,
+      "desc": "是否每隔若干格加外凸扶壁柱"
+    },
+    "pillar_interval": {
+      "type": "int", "default": 8, "min": 2, "max": 128,
+      "desc": "扶壁柱间隔（格）"
+    },
+    "pillar_block": {
+      "type": "block", "default": "minecraft:chiseled_stone_bricks",
+      "desc": "扶壁柱材质"
+    },
+    "gate_enable": {
+      "type": "bool", "default": true,
+      "desc": "是否留门洞"
+    },
+    "gate_side": {
+      "type": "choice", "default": "south", "choices": ["south", "north", "west", "east"],
+      "desc": "门洞所在面"
+    },
+    "gate_width": {
+      "type": "int", "default": 5, "min": 1, "max": 64,
+      "desc": "门洞净宽"
+    },
+    "gate_height": {
+      "type": "int", "default": 4, "min": 2, "max": 128,
+      "desc": "门洞净高"
+    },
+    "gate_arch": {
+      "type": "bool", "default": true,
+      "desc": "门洞是否拱形收口"
+    }
+  },
+  "constraints": [
+    {"expr": "base_height < wall_height", "msg": "墙基高必须小于墙体总高"},
+    {"expr": "gate_height <= wall_height", "msg": "门洞高不能超过墙体总高"},
+    {"expr": "gate_width <= (length if gate_side in ('south','north') else width) - 4", "msg": "门洞宽相对该面长度过大"},
+    {"expr": "pillar_interval >= 2", "msg": "扶壁柱间隔至少 2 格"}
+  ]
+}
